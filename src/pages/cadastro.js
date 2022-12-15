@@ -1,40 +1,42 @@
 import testando from "./../assets/t.jpg"
 import styled from "styled-components"
-import axios from "axios"
 import React from "react"
-import { Link } from "react-router-dom"
+import axios from "axios"
 
-export default function Login () {
+export default function Cadastro () {
     const [email, setEmail] =  React.useState("")
     const [password, setPassword] = React.useState("")
+    const [name, setName] =  React.useState("")
+    const [image, setImage] = React.useState("")
 
-    function logar (a) {
+    function cadastrar (a) {
         a.preventDefault()
-        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", {email,password} )
-        promise.then((res) => {console.log(res.data)})
-        promise.catch((err) => alert(err.response.data.message) )
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", {email, name,image,password})
+        promise.then((res) => console.log(res))
+        promise.catch((err) => alert(err.response.data.message))
+
     }
 
 
-
     return (
-        <SingUP>
-            <img src={testando} alt="TackIt"></img>
 
-            <form onSubmit={(a) => logar(a)}>
+        <SingUP>
+        <img src={testando} alt="TackIt"></img>
+        
+        <form onSubmit={(a) => cadastrar(a)}>
                 <input onChange={ (a) => setEmail(a.target.value) } required type="email" placeholder="email"></input>
                 <input onChange={ (a) => setPassword(a.target.value) } required type="password" placeholder="senha"></input>
+                <input onChange={ (a) => setName(a.target.value) } required type="text" placeholder="nome"></input>
+                <input onChange={ (a) => setImage(a.target.value) } required type="text" placeholder="foto"></input>
                 <button type="submit" >Entrar</button>
-                <Link to="/cadastro/">Não tem cadastro ainda? Cadastre-se!</Link>
+                
             </form>
-
         </SingUP>
-
 
     )
 
-}
 
+}
 const SingUP = styled.div`
     display: flex;
     justify-content: center;

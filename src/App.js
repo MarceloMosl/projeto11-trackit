@@ -1,11 +1,17 @@
 import styled, { createGlobalStyle } from "styled-components";
 import Login from "./pages/login";
+import { BrowserRouter,Routes, Route } from "react-router-dom";
+import Cadastro from "./pages/cadastro";
+
 function App() {
   return (
-    <>
+    <BrowserRouter>
     <GlobalStyle />
-    <Login/>
-    </>
+	<Routes>
+    <Route path="/"  element={<Login/>}/>
+	<Route path="/cadastro"  element={<Cadastro/>}/>
+	</Routes>
+    </BrowserRouter>
   );
 }
 
