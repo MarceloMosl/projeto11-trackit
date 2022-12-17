@@ -2,6 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Login from "./pages/login";
 import { BrowserRouter,Routes, Route } from "react-router-dom";
 import Cadastro from "./pages/cadastro";
+import Habits from "./pages/habitos";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
 	<Routes>
     <Route path="/"  element={<Login/>}/>
 	<Route path="/cadastro"  element={<Cadastro/>}/>
+	<Route path="/habitos" element={<Habits/>}/>
 	</Routes>
     </BrowserRouter>
   );

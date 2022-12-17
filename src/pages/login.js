@@ -3,12 +3,14 @@ import loadingImg from "./../assets/loading.png"
 import styled from "styled-components"
 import axios from "axios"
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function Login () {
     const [email, setEmail] =  React.useState("")
     const [password, setPassword] = React.useState("")
     const [loading, setLoading] = React.useState(false)
+    const navigate =  useNavigate()
+  
 
     function logar (a) {
         setLoading(true)
@@ -17,8 +19,13 @@ export default function Login () {
         promise.then((res) => {
             setLoading(false)
             console.log(res.data)
+            navigate(`/habitos/`)
+
         })
-        promise.catch((err) => alert(err.response.data.message) )
+        promise.catch((err) => {
+            alert(err.response.data.message) 
+            setLoading(false)
+        } )
     }
 
 
