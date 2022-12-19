@@ -1,12 +1,16 @@
 import neymar from "./../assets/neymar.jpg"
 import styled from "styled-components"
-import React from "react"
+import React, {useContext} from "react"
+import { AuthToken } from "../context/Context"
+
 
 
 export default function Habits () {
     const [state, setState] = React.useState(false)
     const days =  ["Segunda", "Terça", "Quarta", "Quita", "Sexta", "Sabado", "Domingo"]
     const [selecionados, setSelecionados] = React.useState([])
+
+    const { token } = useContext(AuthToken)
 
     return (
     <>

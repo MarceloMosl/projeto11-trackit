@@ -2,14 +2,17 @@ import testando from "./../assets/t.jpg"
 import loadingImg from "./../assets/loading.png"
 import styled from "styled-components"
 import axios from "axios"
-import React from "react"
+import React, { useContext } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AuthToken } from "../context/Context"
 
 export default function Login () {
     const [email, setEmail] =  React.useState("")
     const [password, setPassword] = React.useState("")
     const [loading, setLoading] = React.useState(false)
     const navigate =  useNavigate()
+
+    const { setToken } = useContext(AuthToken)
   
 
     function logar (a) {
@@ -19,6 +22,7 @@ export default function Login () {
         promise.then((res) => {
             setLoading(false)
             console.log(res.data)
+            setToken(res.data)
             navigate(`/habitos/`)
 
         })

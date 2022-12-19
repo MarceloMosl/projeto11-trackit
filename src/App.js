@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import Login from "./pages/login";
+import React from "react";
 import { BrowserRouter,Routes, Route } from "react-router-dom";
 import Cadastro from "./pages/cadastro";
 import Habits from "./pages/habitos";
