@@ -3,13 +3,14 @@ import loadingImg from "./../assets/loading.png"
 import styled from "styled-components"
 import React from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 export default function Cadastro () {
     const [email, setEmail] =  React.useState("")
     const [password, setPassword] = React.useState("")
     const [name, setName] =  React.useState("")
     const [image, setImage] = React.useState("")
     const [loading, setLoading] = React.useState(false)
+    const navigate = useNavigate()
 
     function cadastrar (a) {
         setLoading(true)
@@ -18,6 +19,7 @@ export default function Cadastro () {
         promise.then((res) => {
             console.log(res)
             setLoading(false)
+            navigate(`/`)
 
         })
         promise.catch((err) => {

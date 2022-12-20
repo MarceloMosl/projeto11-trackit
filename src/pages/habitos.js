@@ -4,6 +4,7 @@ import styled from "styled-components";
 import React, { useContext, useEffect } from "react";
 import { AuthToken } from "../context/Context";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Habits() {
     const [state, setState] = React.useState(false);
@@ -22,6 +23,7 @@ export default function Habits() {
     const [habitos, setHabitos] = React.useState([])
     const [atualiza, setAtualiza] = React.useState(1)
     const { token } = useContext(AuthToken);
+    const navigate = useNavigate()
 
     useEffect(() => {
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", { headers: { "Authorization": `Bearer ${token.token}` } })
@@ -110,8 +112,8 @@ export default function Habits() {
 
             <Footer>
                     
-                    <p>Hábitos</p>
-                    <div><span>Hoje</span></div>
+                    <p onClick={() => navigate("/habitos")}>Hábitos</p>
+                    <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
                     <p>Histórico</p>
 
 
