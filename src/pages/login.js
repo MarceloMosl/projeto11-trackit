@@ -21,7 +21,6 @@ export default function Login () {
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", {email,password} )
         promise.then((res) => {
             setLoading(false)
-            console.log(res.data)
             setToken(res.data)
             navigate(`/habitos/`)
 

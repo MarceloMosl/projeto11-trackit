@@ -5,6 +5,7 @@ import { BrowserRouter,Routes, Route } from "react-router-dom";
 import Cadastro from "./pages/cadastro";
 import Habits from "./pages/habitos";
 import Hoje from "./pages/hoje";
+import Historico from "./pages/historico";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 	<Route path="/cadastro"  element={<Cadastro/>}/>
 	<Route path="/habitos" element={<Habits/>}/>
 	<Route path="/hoje" element={<Hoje />}/>
+	<Route path="/historico" element={<Historico />} />
 	</Routes>
     </BrowserRouter>
   );

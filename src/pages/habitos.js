@@ -1,5 +1,4 @@
 
-import hoje from "./../assets/hoje.png"
 import styled from "styled-components";
 import React, { useContext, useEffect } from "react";
 import { AuthToken } from "../context/Context";
@@ -29,33 +28,32 @@ export default function Habits() {
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
             setHabitos(res.data)
-            console.log(res.data)
         })
-        promise.catch((err) => console.log(err.response.data))
+        promise.catch((err) => alert(err.response.data))
     }, [atualiza])
 
 
-    function enviarHabito (a) {
+    function enviarHabito(a) {
         a.preventDefault()
-        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {name,days},{ headers: { "Authorization": `Bearer ${token.token}` }})
-        promise.then((res) => {console.log(res.data)
+        const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", { name, days }, { headers: { "Authorization": `Bearer ${token.token}` } })
+        promise.then((res) => {
             setAtualiza(atualiza - 1)
             setDays([])
             setName("")
         })
-        promise.catch((err) => console.log(err.response.data))
+        promise.catch((err) => alert(err.response.data))
     }
-    function removeHabit (habit) {
-        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, { headers: { "Authorization": `Bearer ${token.token}` } } )
-        promise.catch((err) => console.log(err))
-        promise.then((res) => setAtualiza(atualiza - 1))  
+    function removeHabit(habit) {
+        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, { headers: { "Authorization": `Bearer ${token.token}` } })
+        promise.catch((err) => alert(err))
+        promise.then((res) => setAtualiza(atualiza - 1))
     }
 
     return (
         <Container>
             <Header>
                 <h1>TrackIt</h1>
-                <img src={token.image} alt="Neymaru"></img>
+                <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
 
             <Add>
@@ -66,7 +64,7 @@ export default function Habits() {
                 </button>
             </Add>
             <Habito onSubmit={(a) => enviarHabito(a)} visible={state}>
-                <input type="text" onChange={(e) => setName(e.target.value)} placeholder="nome do habito" required />
+                <input type="text" onChange={(e) => setName(e.target.value)} value={name} placeholder="nome do habito" required />
                 <div>
                     {weekDays.map((a, b) =>
                         selecionados.includes(a) ? (
@@ -78,7 +76,7 @@ export default function Habits() {
                                 select={"false"}
                                 onClick={() => {
                                     setSelecionados([...selecionados, a])
-                                    setDays([...days, b+1])
+                                    setDays([...days, b + 1])
                                 }}
                                 type="button"
                             >
@@ -88,33 +86,35 @@ export default function Habits() {
                     )}
                 </div>
                 <section>
-                    <Cancelar type="reset" onClick={() => {
+                    <Cancelar type="button" onClick={() => {
                         setSelecionados([])
                         setDays([])
+                        setState(false)
                     }}>
                         Cancelar
                     </Cancelar>
                     <Enviar type="submit" onClick={() => {
                         setSelecionados([])
+                        setState(false)
                     }}>Enviar</Enviar>
                 </section>
             </Habito>
 
             <Content>
-                {habitos.length == 0 
-                ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-                : habitos.map((a) => <Item>
-                    <h1>{a.name}</h1>
-                    <p>Dias {a.days.map((value) => " - " + weekDays[Number(value) - 1] + " ")}</p>
-                    <ion-icon onClick={() => removeHabit(a)} name="trash-outline"></ion-icon>
-                </Item>)}
+                {habitos.length == 0
+                    ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                    : habitos.map((a) => <Item>
+                        <h1>{a.name}</h1>
+                        <p>Dias {a.days.map((value) => " - " + weekDays[Number(value) - 1] + " ")}</p>
+                        <ion-icon onClick={() => removeHabit(a)} name="trash-outline"></ion-icon>
+                    </Item>)}
             </Content>
 
             <Footer>
-                    
-                    <p onClick={() => navigate("/habitos")}>Hábitos</p>
-                    <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
-                    <p>Histórico</p>
+
+                <p onClick={() => navigate("/habitos")}>Hábitos</p>
+                <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
+                <p onClick={() => navigate("/historico")}>Historico</p>
 
 
             </Footer>

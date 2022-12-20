@@ -17,7 +17,6 @@ export default function Cadastro () {
         a.preventDefault()
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", {email, name,image,password})
         promise.then((res) => {
-            console.log(res)
             setLoading(false)
             navigate(`/`)
 

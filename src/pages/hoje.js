@@ -25,25 +25,23 @@ export default function Hoje() {
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
             setTodayHabits(res.data)})
-        promise.catch((err) => console.log(err.response.data))
+        promise.catch((err) => alert(err.response.data))
     }, [atualiza])
 
     function completarHabito(obj) {
-        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/check`, {headers: {"Authorization": `Bearer ${token.token}`}})
+        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/check`, { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
-        console.log("deu certo" + res.data)
         setAtualiza(atualiza - 1)
     })
-        promise.catch((err) => console.log(err.response.data))
+        promise.catch((err) => alert(err.response.data))
     }
 
     function desmarcarHabito(obj) {
         const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/uncheck`, {headers: {"Authorization": `Bearer ${token.token}`}})
         promise.then((res) => {
-        console.log("deu certo" + res.data)
         setAtualiza(atualiza - 1)
     })
-        promise.catch((err) => console.log(err.response.data))
+        promise.catch((err) => alert(err.response.data))
     }
 
 
@@ -52,7 +50,7 @@ export default function Hoje() {
         <Container>
             <Header>
                 <h1>TrackIt</h1>
-                <img src={token.image} alt="Neymaru"></img>
+                <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
             <h1>{weekDays[Number(dia.getDay()) - 1]} , {String(dia.getDate())}/{String(dia.getMonth() + 1)} </h1>
             <Content>
@@ -66,9 +64,9 @@ export default function Hoje() {
                 </div> : <div><p>
                     {value.name}
                     <br></br>
-                    Sequencia Atual: {value.currentSequence} Dias
+                    Sequencia Atual:<span style={{color: "green"}}>{String(value.currentSequence)}</span> Dias
                     <br></br>
-                    Seu recorde: {value.highestSequence} dias</p>
+                    Seu recorde: <span style={{color: "green"}}>{String(value.highestSequence)}</span> dias</p>
                     <Verde onClick={() => desmarcarHabito(value)}><ion-icon name="checkbox"></ion-icon></Verde>
                 </div>)}
             </Content>
@@ -77,7 +75,7 @@ export default function Hoje() {
             <Footer>
                 <p onClick={() => navigate("/habitos")}>Hábitos</p>
                 <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
-                <p>Historico</p>
+                <p onClick={() => navigate("/historico")}>Historico</p>
             </Footer>
         </Container>
 
@@ -89,8 +87,10 @@ background-color: #E5E5E5;
 height: 100vh;
 font-family: "Lexend Deca";
 h1{
+    box-sizing: border-box;
     font-size: 23px;
     color: #126BA5;
+    padding: 20px;
 }
 `
 const Header = styled.div`
