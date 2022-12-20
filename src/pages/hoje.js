@@ -19,17 +19,22 @@ export default function Hoje() {
         "Domingo",
     ];
     const [todayHabits, setTodayHabits] = React.useState([])
+    const [newArray, SetNewArray] = React.useState([])
     const [atualiza, setAtualiza] = React.useState(1)
+    const [concludes, setConcludes] = React.useState([])
 
     useEffect(() => {
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
-            setTodayHabits(res.data)})
+            setTodayHabits(res.data)
+            res.data.map(a => a.done ? setConcludes(...concludes, a.id): "")
+            console.log("concluidos", concludes)
+        })
         promise.catch((err) => alert(err.response.data))
     }, [atualiza])
 
     function completarHabito(obj) {
-        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/check`, { headers: { "Authorization": `Bearer ${token.token}` } })
+        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/check`, {}, { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
         setAtualiza(atualiza - 1)
     })
@@ -37,7 +42,7 @@ export default function Hoje() {
     }
 
     function desmarcarHabito(obj) {
-        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/uncheck`, {headers: {"Authorization": `Bearer ${token.token}`}})
+        const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/uncheck`, {}, {headers: {"Authorization": `Bearer ${token.token}`}})
         promise.then((res) => {
         setAtualiza(atualiza - 1)
     })
@@ -53,6 +58,7 @@ export default function Hoje() {
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
             <h1>{weekDays[Number(dia.getDay()) - 1]} , {String(dia.getDate())}/{String(dia.getMonth() + 1)} </h1>
+            {todayHabits.length == 0 ? <p>Nenhum Habito concluido ainda</p> : <p>{(concludes.length/todayHabits.length *100).toFixed(0)}% dos habitos concluidos</p> }
             <Content>
                 {todayHabits.map((value, index) => !value.done ? <div><p>
                     {value.name}
@@ -91,6 +97,10 @@ h1{
     font-size: 23px;
     color: #126BA5;
     padding: 20px;
+}
+p{
+    box-sizing: border-box;
+    padding-left: 20px;
 }
 `
 const Header = styled.div`
