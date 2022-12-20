@@ -51,7 +51,7 @@ export default function Habits() {
 
     return (
         <Container>
-            <Header>
+            <Header data-test="header">
                 <h1>TrackIt</h1>
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
@@ -60,19 +60,21 @@ export default function Habits() {
                 <h1>Meus hábitos</h1>
                 <button
                     onClick={() => (state == true ? setState(false) : setState(true))}
+                    data-test="habit-create-btn"
                 >+
                 </button>
             </Add>
-            <Habito onSubmit={(a) => enviarHabito(a)} visible={state}>
-                <input type="text" onChange={(e) => setName(e.target.value)} value={name} placeholder="nome do habito" required />
+            <Habito data-test="habit-create-container" onSubmit={(a) => enviarHabito(a)} visible={state}>
+                <input data-test="habit-name-input" type="text" onChange={(e) => setName(e.target.value)} value={name} placeholder="nome do habito" required />
                 <div>
                     {weekDays.map((a, b) =>
                         selecionados.includes(a) ? (
-                            <Butao select={"true"} type="button" disabled={true}>
+                            <Butao data-test="habit-day" select={"true"} type="button" disabled={true}>
                                 {a[0]}
                             </Butao>
                         ) : (
                             <Butao
+                            data-test="habit-day"
                                 select={"false"}
                                 onClick={() => {
                                     setSelecionados([...selecionados, a])
@@ -86,14 +88,18 @@ export default function Habits() {
                     )}
                 </div>
                 <section>
-                    <Cancelar type="button" onClick={() => {
+                    <Cancelar type="button"
+                    data-test="habit-create-cancel-btn"
+                    onClick={() => {
                         setSelecionados([])
                         setDays([])
                         setState(false)
                     }}>
                         Cancelar
                     </Cancelar>
-                    <Enviar type="submit" onClick={() => {
+                    <Enviar
+                    data-test="habit-create-save-btn"
+                    type="submit" onClick={() => {
                         setSelecionados([])
                         setState(false)
                     }}>Enviar</Enviar>
@@ -110,13 +116,10 @@ export default function Habits() {
                     </Item>)}
             </Content>
 
-            <Footer>
-
-                <p onClick={() => navigate("/habitos")}>Hábitos</p>
-                <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
-                <p onClick={() => navigate("/historico")}>Historico</p>
-
-
+            <Footer data-test="menu">
+                <p data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</p>
+                <div data-test="today-link" onClick={() => navigate("/hoje")}><span>Hoje</span></div>
+                <p data-test="history-link">Historico</p>
             </Footer>
         </Container>
     );

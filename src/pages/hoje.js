@@ -53,7 +53,7 @@ export default function Hoje() {
 
     return (
         <Container>
-            <Header>
+            <Header data-test="header">
                 <h1>TrackIt</h1>
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
@@ -78,10 +78,10 @@ export default function Hoje() {
             </Content>
 
 
-            <Footer>
-                <p onClick={() => navigate("/habitos")}>Hábitos</p>
-                <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
-                <p onClick={() => navigate("/historico")}>Historico</p>
+            <Footer data-test="menu">
+                <p data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</p>
+                <div data-test="today-link" onClick={() => navigate("/hoje")}><span>Hoje</span></div>
+                <p data-test="history-link">Historico</p>
             </Footer>
         </Container>
 

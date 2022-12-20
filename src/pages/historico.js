@@ -10,7 +10,7 @@ export default function Historico() {
 
     return (
         <Container>
-            <Header>
+            <Header data-test="header">
                 <h1>TrackIt</h1>
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
@@ -18,10 +18,10 @@ export default function Historico() {
             <div>
             Em breve você poderá ver o histórico dos seus hábitos aqui!
             </div>
-            <Footer>
-                <p onClick={() => navigate("/habitos")}>Hábitos</p>
-                <div onClick={() => navigate("/hoje")}><span>Hoje</span></div>
-                <p>Historico</p>
+            <Footer data-test="menu">
+                <p data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</p>
+                <div data-test="today-link" onClick={() => navigate("/hoje")}><span>Hoje</span></div>
+                <p data-test="history-link">Historico</p>
             </Footer>
         </Container>
 

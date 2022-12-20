@@ -38,10 +38,10 @@ export default function Login () {
             <img src={testando} alt="TackIt"></img>
 
             <form onSubmit={(a) => logar(a)}>
-                <input disabled={loading} onChange={ (a) => setEmail(a.target.value) } required type="email" placeholder="email"></input>
-                <input disabled={loading} onChange={ (a) => setPassword(a.target.value) } required type="password" placeholder="senha"></input>
-                {loading ? <button disabled={true}><img src={loadingImg}></img></button> : <button type="submit" >Entrar</button>}
-                <Link to="/cadastro/">Não tem cadastro ainda? Cadastre-se!</Link>
+                <input data-test="email-input" disabled={loading} onChange={ (a) => setEmail(a.target.value) } required type="email" placeholder="email"></input>
+                <input data-test="password-input" disabled={loading} onChange={ (a) => setPassword(a.target.value) } required type="password" placeholder="senha"></input>
+                {loading ? <button disabled={true}><img src={loadingImg}></img></button> : <button  data-test="login-btn" type="submit" >Entrar</button>}
+                <Link data-test="signup-link"  to="/cadastro/">Não tem cadastro ainda? Cadastre-se!</Link>
             </form>
 
         </SingUP>
