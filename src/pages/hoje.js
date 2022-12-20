@@ -19,35 +19,37 @@ export default function Hoje() {
         "Domingo",
     ];
     const [todayHabits, setTodayHabits] = React.useState([])
-    const [newArray, SetNewArray] = React.useState([])
     const [atualiza, setAtualiza] = React.useState(1)
     const [concludes, setConcludes] = React.useState([])
 
     useEffect(() => {
         const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", { headers: { "Authorization": `Bearer ${token.token}` } })
         promise.then((res) => {
-            setTodayHabits(res.data)
-            res.data.map(a => a.done ? setConcludes(...concludes, a.id): "")
-            console.log("concluidos", concludes)
+        const response = res.data
+        setTodayHabits(res.data)
+        let conclusos = (res.data).filter((habit) => {
+            if (habit.done) {
+                return true
+            }
+            return false
+        })
+        setConcludes(conclusos)
+        
         })
         promise.catch((err) => alert(err.response.data))
     }, [atualiza])
 
     function completarHabito(obj) {
+        if(obj.done !== true){
         const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/check`, {}, { headers: { "Authorization": `Bearer ${token.token}` } })
-        promise.then((res) => {
-        setAtualiza(atualiza - 1)
-    })
+        promise.then((res) => { setAtualiza(atualiza - 1)})
         promise.catch((err) => alert(err.response.data))
-    }
-
-    function desmarcarHabito(obj) {
+    } else {
         const promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${obj.id}/uncheck`, {}, {headers: {"Authorization": `Bearer ${token.token}`}})
-        promise.then((res) => {
-        setAtualiza(atualiza - 1)
-    })
+        promise.then((res) => {setAtualiza(atualiza - 1)}) 
         promise.catch((err) => alert(err.response.data))
     }
+}
 
 
 
@@ -58,7 +60,7 @@ export default function Hoje() {
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
             <h1 data-test="today">{weekDays[Number(dia.getDay()) - 1]} , {String(dia.getDate())}/{String(dia.getMonth() + 1)} </h1>
-            {todayHabits.length == 0 ? <p data-test="today-counter">Nenhum Habito concluido ainda</p> : <p data-test="today-counter" >{(concludes.length/todayHabits.length *100).toFixed(0)}% dos habitos concluidos</p> }
+            {concludes.length == 0 ? <p data-test="today-counter">Nenhum Habito concluido ainda</p> : <p data-test="today-counter" >{(concludes.length/ todayHabits.length * 100).toFixed(0)}% dos habitos concluidos</p> }
             <Content>
                 {todayHabits.map((value, index) => !value.done ? <div data-test="today-habit-container"><p>
                     {value.name}
@@ -73,7 +75,7 @@ export default function Hoje() {
                     Sequencia Atual:<span data-test="today-habit-sequence"  style={{color: "green"}}>{String(value.currentSequence)}</span> Dias
                     <br></br>
                     Seu recorde: <span  data-test="today-habit-record" style={{color: "green"}}>{String(value.highestSequence)}</span> dias</p>
-                    <Verde data-test="today-habit-check-btn" onClick={() => desmarcarHabito(value)}><ion-icon name="checkbox"></ion-icon></Verde>
+                    <Verde data-test="today-habit-check-btn" onClick={() => completarHabito(value)}><ion-icon name="checkbox"></ion-icon></Verde>
                 </div>)}
             </Content>
 
