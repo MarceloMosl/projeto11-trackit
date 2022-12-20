@@ -1,4 +1,5 @@
-import neymar from "./../assets/neymar.jpg";
+
+import hoje from "./../assets/hoje.png"
 import styled from "styled-components";
 import React, { useContext, useEffect } from "react";
 import { AuthToken } from "../context/Context";
@@ -11,7 +12,7 @@ export default function Habits() {
         "Segunda",
         "Terça",
         "Quarta",
-        "Quita",
+        "Quinta",
         "Sexta",
         "Sabado",
         "Domingo",
@@ -19,6 +20,7 @@ export default function Habits() {
     const [selecionados, setSelecionados] = React.useState([]);
     const [days, setDays] = React.useState([]);
     const [habitos, setHabitos] = React.useState([])
+    const [atualiza, setAtualiza] = React.useState(1)
     const { token } = useContext(AuthToken);
 
     useEffect(() => {
@@ -28,20 +30,27 @@ export default function Habits() {
             console.log(res.data)
         })
         promise.catch((err) => console.log(err.response.data))
-    }, [days])
+    }, [atualiza])
 
 
     function enviarHabito (a) {
         a.preventDefault()
         const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {name,days},{ headers: { "Authorization": `Bearer ${token.token}` }})
         promise.then((res) => {console.log(res.data)
+            setAtualiza(atualiza - 1)
             setDays([])
+            setName("")
         })
         promise.catch((err) => console.log(err.response.data))
     }
+    function removeHabit (habit) {
+        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`, { headers: { "Authorization": `Bearer ${token.token}` } } )
+        promise.catch((err) => console.log(err))
+        promise.then((res) => setAtualiza(atualiza - 1))  
+    }
 
     return (
-        <>
+        <Container>
             <Header>
                 <h1>TrackIt</h1>
                 <img src={token.image} alt="Neymaru"></img>
@@ -92,14 +101,29 @@ export default function Habits() {
             <Content>
                 {habitos.length == 0 
                 ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-                : habitos.map((a) => <p>{a.name}</p>)}
+                : habitos.map((a) => <Item>
+                    <h1>{a.name}</h1>
+                    <p>Dias {a.days.map((value) => " - " + weekDays[Number(value) - 1] + " ")}</p>
+                    <ion-icon onClick={() => removeHabit(a)} name="trash-outline"></ion-icon>
+                </Item>)}
             </Content>
 
-            <footer></footer>
-        </>
+            <Footer>
+                    
+                    <p>Hábitos</p>
+                    <div><span>Hoje</span></div>
+                    <p>Histórico</p>
+
+
+            </Footer>
+        </Container>
     );
 }
-
+const Container = styled.div`
+background-color: #E5E5E5;
+height: 100vh;
+font-family: "Lexend Deca";
+`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -134,15 +158,19 @@ const Add = styled.div`
   }
 `;
 const Content = styled.div`
-  font-family: "Lexend Deca";
+  
   font-size: 18px;
   color: #666666;
   padding: 20px;
 `;
 const Habito = styled.form`
   display: ${(props) => (props.visible ? "flex" : "none")};
+  background-color: white;
   flex-direction: column;
   padding: 20px;
+  box-sizing: border-box;
+  width: 360px;
+  border-radius: 5px;
   margin: auto;
   color: #d4d4d4;
   input {
@@ -190,3 +218,55 @@ const Butao = styled.button`
   height: 30px;
   margin-bottom: 20px;
 `;
+const Item = styled.div`
+background-color: white;
+padding: 20px;
+display: flex;
+flex-direction: column;
+margin-bottom: 20px;
+position: relative;
+border-radius: 5px;
+ion-icon{
+    position: absolute;
+    top: 15px;
+    right: 5px;
+}
+
+
+`
+const Footer = styled.div`
+position: fixed;
+bottom: 0;
+background-color: white;
+
+width: 100vw;
+height: 70px;
+box-sizing: border-box;
+padding: 20px;
+
+display: flex;
+justify-content: space-between;
+
+p{
+    text-decoration: underline;
+}
+div{
+    position: relative;
+    background-color: red;
+}
+
+span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #52B6FF;
+    position: absolute;
+    top: -60px;
+    right: -50px;
+    height: 91px;
+    width: 91px;
+    border-radius: 50%;
+
+}
+`
