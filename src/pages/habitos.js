@@ -64,6 +64,7 @@ export default function Habits() {
                 >+
                 </button>
             </Add>
+           
             <Habito data-test="habit-create-container" onSubmit={(a) => enviarHabito(a)} visible={state}>
                 <input data-test="habit-name-input" type="text" onChange={(e) => setName(e.target.value)} value={name} placeholder="nome do habito" required />
                 <div>
@@ -109,10 +110,10 @@ export default function Habits() {
             <Content>
                 {habitos.length == 0
                     ? <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-                    : habitos.map((a) => <Item>
-                        <h1>{a.name}</h1>
-                        <p>Dias {a.days.map((value) => " - " + weekDays[Number(value) - 1] + " ")}</p>
-                        <ion-icon onClick={() => removeHabit(a)} name="trash-outline"></ion-icon>
+                    : habitos.map((a) => <Item data-test="habit-container" >
+                        <h1 data-test="habit-name">{a.name}</h1>
+                        <p data-test="habit-day">Dias {a.days.map((value) => <span data-test="habit-day">{" - " + weekDays[Number(value) - 1] + " "}</span>)}</p>
+                        <ion-icon data-test="habit-delete-btn" onClick={() => removeHabit(a)} name="trash-outline"></ion-icon>
                     </Item>)}
             </Content>
 
@@ -126,8 +127,8 @@ export default function Habits() {
 }
 const Container = styled.div`
 background-color: #E5E5E5;
-height: 100vh;
 font-family: "Lexend Deca";
+height: 100vh;
 `
 const Header = styled.div`
   display: flex;
@@ -162,11 +163,17 @@ const Add = styled.div`
     border-radius: 5px;
   }
 `;
-const Content = styled.div`
-  
+const Content = styled.section`
+    box-sizing: border-box;
   font-size: 18px;
+  background-color:#E5E5E5;
+  height: fit-content;  
   color: #666666;
   padding: 20px;
+  padding-bottom: 90px;
+  overflow-y: scroll;
+
+
 `;
 const Habito = styled.form`
   display: ${(props) => (props.visible ? "flex" : "none")};

@@ -57,23 +57,23 @@ export default function Hoje() {
                 <h1>TrackIt</h1>
                 <img onClick={ () => navigate("/")} src={token.image} alt="Neymaru"></img>
             </Header>
-            <h1>{weekDays[Number(dia.getDay()) - 1]} , {String(dia.getDate())}/{String(dia.getMonth() + 1)} </h1>
-            {todayHabits.length == 0 ? <p>Nenhum Habito concluido ainda</p> : <p>{(concludes.length/todayHabits.length *100).toFixed(0)}% dos habitos concluidos</p> }
+            <h1 data-test="today">{weekDays[Number(dia.getDay()) - 1]} , {String(dia.getDate())}/{String(dia.getMonth() + 1)} </h1>
+            {todayHabits.length == 0 ? <p data-test="today-counter">Nenhum Habito concluido ainda</p> : <p data-test="today-counter" >{(concludes.length/todayHabits.length *100).toFixed(0)}% dos habitos concluidos</p> }
             <Content>
-                {todayHabits.map((value, index) => !value.done ? <div><p>
+                {todayHabits.map((value, index) => !value.done ? <div data-test="today-habit-container"><p>
                     {value.name}
                     <br></br>
-                    Sequencia Atual: {value.currentSequence} Dias
+                    Sequencia Atual: <span data-test="today-habit-check-btn">{value.currentSequence}</span> Dias
                     <br></br>
-                    Seu recorde: {value.highestSequence} dias</p>
-                    <Cinza onClick={() => completarHabito(value)}><ion-icon name="checkbox"></ion-icon></Cinza>
-                </div> : <div><p>
+                    Seu recorde: <span data-test="today-habit-check-btn">{value.highestSequence}</span> dias</p>
+                    <Cinza data-test="today-habit-check-btn" onClick={() => completarHabito(value)}><ion-icon name="checkbox"></ion-icon></Cinza>
+                </div> : <div data-test="today-habit-container"><p data-test="today-habit-name" >
                     {value.name}
                     <br></br>
-                    Sequencia Atual:<span style={{color: "green"}}>{String(value.currentSequence)}</span> Dias
+                    Sequencia Atual:<span data-test="today-habit-sequence"  style={{color: "green"}}>{String(value.currentSequence)}</span> Dias
                     <br></br>
-                    Seu recorde: <span style={{color: "green"}}>{String(value.highestSequence)}</span> dias</p>
-                    <Verde onClick={() => desmarcarHabito(value)}><ion-icon name="checkbox"></ion-icon></Verde>
+                    Seu recorde: <span  data-test="today-habit-record" style={{color: "green"}}>{String(value.highestSequence)}</span> dias</p>
+                    <Verde data-test="today-habit-check-btn" onClick={() => desmarcarHabito(value)}><ion-icon name="checkbox"></ion-icon></Verde>
                 </div>)}
             </Content>
 
